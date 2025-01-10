@@ -1,18 +1,25 @@
 {
-  "name": "fullstack-javascript-project-4",
+  "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/kirillnev/fullstack-javascript-project-4/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/kirillnev/fullstack-javascript-project-4/actions)",
+  "description": "",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "page-loader": "./bin/page-loader.js"
+  },
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest --passWithNoTests --coverage",
+    "lint": "npx eslint .",
+    "publish": "npm publish --dry-run"
   },
   "author": "k.nevinskii",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.9",
     "commander": "^13.0.0",
     "debug": "^4.3.5",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "nock": "^13.5.6"
   },
   "lint-staged": {
     "*.js": "eslint --fix"
