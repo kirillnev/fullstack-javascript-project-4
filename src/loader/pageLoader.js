@@ -16,9 +16,9 @@ const pageLoader = (url, options = {}) => {
   return axios.get(url)
     .then((response) => fs.writeFile(filePath, response.data))
     .then(() => filePath)
-    .catch ((error) => {
-      throw new Error(`Failed to download page: ${error.message}`)
-    })
+    .catch((error) => {
+      throw new Error(`Failed to download page: ${error.message}`);
+    });
 };
 
 export default pageLoader;

@@ -2,8 +2,10 @@ import nock from 'nock';
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
+import {
+  expect, test, beforeAll, afterAll,
+} from '@jest/globals';
 import pageLoader from '../pageLoader.js';
-import {expect, test, beforeAll, afterAll} from '@jest/globals';
 
 const tmpDir = path.join(os.tmpdir(), 'page-loader-tests');
 
