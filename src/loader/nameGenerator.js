@@ -9,9 +9,9 @@ export const generatePageName = (url) => {
 };
 
 export const generateFileName = (url) => {
-  const { pathname } = new URL(url);
+  const { hostname, pathname } = new URL(url);
   const extension = path.extname(pathname) || '';
-  const basePath = `${path.dirname(pathname)}/${path.basename(pathname, extension)}`;
+  const basePath = `${hostname}${path.dirname(pathname)}/${path.basename(pathname, extension)}`;
 
   return basePath
     .replace(/[^a-zA-Z0-9]+/g, '-')
