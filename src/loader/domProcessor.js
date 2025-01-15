@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import path from 'path';
 import { generateDirName, generateFileName } from './nameGenerator.js';
 
@@ -23,6 +23,11 @@ const processHtml = (html, pageUrl) => {
 
       const resourceUrl = new URL(originalPath, origin);
 
+      // Пропускаем локальные ссылки
+      if (originalPath.startsWith(localDirName)) {
+        return;
+      }
+
       if (resourceUrl.host !== host) {
         return;
       }
@@ -38,6 +43,7 @@ const processHtml = (html, pageUrl) => {
         localPath,
       };
 
+      // Обновляем HTML с локальной ссылкой
       $(resource.tag).attr(resource.attr, resource.localPath);
 
       resources.push(resource);
