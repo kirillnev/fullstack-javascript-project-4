@@ -18,13 +18,18 @@ const processHtml = (html, pageUrl) => {
   resourceTags.forEach(({ tag, attr }) => {
     $(tag).each((i, element) => {
       const originalPath = $(element).attr(attr);
-
       if (!originalPath) return;
 
-      const resourceUrl = new URL(originalPath, origin);
+      const { pathname } = new URL(originalPath, origin);
+      const extension = path.extname(pathname) || null;
 
-      // Пропускаем локальные ссылки
-      if (originalPath.startsWith(localDirName)) {
+      if (!extension) return;
+
+      let resourceUrl;
+      try {
+        resourceUrl = new URL(originalPath, origin);
+      } catch (error) {
+        console.error(`Invalid URL: ${originalPath}`);
         return;
       }
 
@@ -33,7 +38,7 @@ const processHtml = (html, pageUrl) => {
       }
 
       const localFileName = generateFileName(resourceUrl.toString());
-      const localPath = path.join(localDirName, localFileName);
+      const localPath = `${localDirName}/${localFileName}`;
 
       const resource = {
         tag,
@@ -42,10 +47,7 @@ const processHtml = (html, pageUrl) => {
         absoluteUrl: resourceUrl.toString(),
         localPath,
       };
-
-      // Обновляем HTML с локальной ссылкой
-      $(resource.tag).attr(resource.attr, resource.localPath);
-
+      $(element).attr(attr, localPath);
       resources.push(resource);
     });
   });

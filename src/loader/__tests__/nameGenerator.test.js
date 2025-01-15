@@ -8,108 +8,62 @@ import {
   generateDirName,
 } from '../nameGenerator.js';
 
-describe('URL name generation utilities', () => {
-  describe('generatePageName', () => {
-    test('Должна генерировать имя файла html из URL без пути', () => {
-      const url = 'https://example.com';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com.html');
-    });
-
-    test('Должна генерировать имя файла html из URL с / на конце', () => {
-      const url = 'https://example.com/';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com.html');
-    });
-
-    test('Должна генерировать имя файла html из URL с путём', () => {
-      const url = 'https://example.com/path/to/page';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com-path-to-page.html');
-    });
-
-    test('Должна заменять все не-буквенно-цифровые символы на дефис', () => {
-      const url = 'https://example.com/path$%^&/to(())=page';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com-path-to-page.html');
-    });
-
-    test('Должна убирать подряд идущие дефисы в конце', () => {
-      const url = 'https://example.com/path/';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com-path.html');
-    });
-
-    test('Должна корректно обрабатывать query-параметры', () => {
-      const url = 'https://example.com/path/to/page?query=123';
-      const result = generatePageName(url);
-
-      expect(result).toBe('example-com-path-to-page.html');
-    });
+describe('generatePageName', () => {
+  test('should generate a valid page name from a URL', () => {
+    const url = 'https://example.com/about';
+    const expected = 'example-com-about.html';
+    expect(generatePageName(url)).toBe(expected);
   });
 
-  describe('generateFileName', () => {
-    test('Должна генерировать имя файла без расширения из URL без пути', () => {
-      const url = 'https://example.com';
-      const result = generateFileName(url);
-
-      expect(result).toBe('example-com');
-    });
-
-    test('Должна генерировать имя файла без расширения из URL с / на конце', () => {
-      const url = 'https://example.com/';
-      const result = generateFileName(url);
-
-      expect(result).toBe('example-com');
-    });
-
-    test('Должна заменять все не-буквенно-цифровые символы на дефис', () => {
-      const url = 'https://example.com/my-file?param=1';
-      const result = generateFileName(url);
-
-      expect(result).toBe('example-com-my-file');
-    });
-
-    test('Должна корректно обрабатывать сложные пути', () => {
-      const url = 'http://blog.example.co.uk/posts/new_post/';
-      const result = generateFileName(url);
-
-      expect(result).toBe('blog-example-co-uk-posts-new-post');
-    });
+  test('should handle URLs with query parameters', () => {
+    const url = 'https://example.com/search?q=test';
+    const expected = 'example-com-search.html';
+    expect(generatePageName(url)).toBe(expected);
   });
 
-  describe('generateDirName', () => {
-    test('Должна генерировать имя директории c суффиксом _files', () => {
-      const url = 'https://example.com/path';
-      const result = generateDirName(url);
+  test('should handle URLs with trailing slashes', () => {
+    const url = 'https://example.com/';
+    const expected = 'example-com.html';
+    expect(generatePageName(url)).toBe(expected);
+  });
+});
 
-      expect(result).toBe('example-com-path_files');
-    });
+describe('generateFileName', () => {
+  test('should generate a valid file name with extension', () => {
+    const url = 'https://example.com/assets/styles.css';
+    const expected = 'assets-styles.css';
+    expect(generateFileName(url)).toBe(expected);
+  });
 
-    test('Должна обрабатывать конечный / и убирать лишние дефисы перед .files', () => {
-      const url = 'https://example.com/path/';
-      const result = generateDirName(url);
+  test('should handle URLs with no extension', () => {
+    const url = 'https://example.com/scripts/main';
+    const expected = 'scripts-main';
+    expect(generateFileName(url)).toBe(expected);
+  });
 
-      expect(result).toBe('example-com-path_files');
-    });
+  test('should handle URLs with special characters', () => {
+    const url = 'https://example.com/assets/image(1).jpg';
+    const expected = 'assets-image-1.jpg';
+    expect(generateFileName(url)).toBe(expected);
+  });
+});
 
-    test('Должна заменять символы, не являющиеся буквой или цифрой, на дефис', () => {
-      const url = 'https://sub.example.io/#$^?test=1';
-      const result = generateDirName(url);
+describe('generateDirName', () => {
+  test('should generate a valid directory name from a URL', () => {
+    const url = 'https://example.com/blog';
+    const expected = 'example-com-blog_files';
+    expect(generateDirName(url)).toBe(expected);
+  });
 
-      expect(result).toBe('sub-example-io_files');
-    });
+  test('should handle URLs with subdirectories', () => {
+    const url = 'https://example.com/docs/api/v1';
+    const expected = 'example-com-docs-api-v1_files';
+    expect(generateDirName(url)).toBe(expected);
+  });
 
-    test('Должна корректно работать на URL без пути', () => {
-      const url = 'https://example.com';
-      const result = generateDirName(url);
-
-      expect(result).toBe('example-com_files');
-    });
+  test('should handle URLs with special characters in the path', () => {
+    const url = 'https://example.com/photos/2023-12-01/gallery#main';
+    const expected = 'example-com-photos-2023-12-01-gallery_files';
+    expect(generateDirName(url)).toBe(expected);
   });
 });

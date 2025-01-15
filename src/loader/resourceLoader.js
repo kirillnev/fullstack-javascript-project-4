@@ -9,10 +9,10 @@ const loadResources = (resources, outputDir) => {
   }
 
   const tasks = resources.map((res) => ({
-    title: `Downloading ${res.absoluteUrl}`,
+    title: res.absoluteUrl,
     task: () => axios.get(res.absoluteUrl, { responseType: 'arraybuffer' })
       .then((response) => {
-        const filePath = path.join(outputDir, res.localPath);
+        const filePath = path.resolve(outputDir, res.localPath);
         return fs.mkdir(path.dirname(filePath), { recursive: true })
           .then(() => fs.writeFile(filePath, response.data));
       }),

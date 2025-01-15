@@ -11,6 +11,7 @@ function pageLoader(url, options) {
       .then((htmlContent) => ({ htmlFilePath, htmlContent })))
     .then(({ htmlFilePath, htmlContent }) => {
       const { html: updatedHtml, resources } = processHtml(htmlContent, url);
+      // console.log(`Total resources found: ${resources.length}`);
 
       return fs.writeFile(htmlFilePath, updatedHtml, 'utf8')
         .then(() => ({ htmlFilePath, resources }));
