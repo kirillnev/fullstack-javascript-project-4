@@ -1,6 +1,8 @@
 import * as cheerio from 'cheerio';
 import path from 'path';
 import { generateDirName, generateFileName } from './nameGenerator.js';
+import fs from 'fs/promises';
+import nock from 'nock';
 
 const processHtml = (html, pageUrl) => {
   const $ = cheerio.load(html);
@@ -19,11 +21,6 @@ const processHtml = (html, pageUrl) => {
     $(tag).each((i, element) => {
       const originalPath = $(element).attr(attr);
       if (!originalPath) return;
-
-      const { pathname } = new URL(originalPath, origin);
-      const extension = path.extname(pathname) || null;
-
-      if (!extension) return;
 
       let resourceUrl;
       try {
@@ -56,3 +53,4 @@ const processHtml = (html, pageUrl) => {
 };
 
 export default processHtml;
+

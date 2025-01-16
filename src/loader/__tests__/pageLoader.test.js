@@ -16,20 +16,20 @@ describe('pageLoader', () => {
   let consoleErrorMock;
 
   beforeAll(() => {
-    nock.disableNetConnect(); // Отключаем реальные сетевые запросы
+    nock.disableNetConnect();
   });
 
   beforeEach(() => {
-    consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {}); // Подавление console.error
+    consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    consoleErrorMock.mockRestore(); // Восстановление console.error после каждого теста
-    nock.cleanAll(); // Очистка моков nock
+    consoleErrorMock.mockRestore();
+    nock.cleanAll();
   });
 
   afterAll(() => {
-    nock.enableNetConnect(); // Включаем сетевые запросы обратно после тестов
+    nock.enableNetConnect();
   });
 
   test('should download and save the page successfully', async () => {

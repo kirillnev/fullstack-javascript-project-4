@@ -10,7 +10,7 @@ export const generatePageName = (url) => {
 
 export const generateFileName = (url) => {
   const { hostname, pathname } = new URL(url);
-  const extension = path.extname(pathname) || '';
+  const extension = path.extname(pathname) || '.html';
   const basePath = `${hostname}${path.dirname(pathname)}/${path.basename(pathname, extension)}`;
 
   return basePath

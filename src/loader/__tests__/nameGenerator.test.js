@@ -42,7 +42,7 @@ describe('nameGenerator functions', () => {
     test('should handle URL without extension', () => {
       const url = 'https://example.com/path/to/resource';
       const result = generateFileName(url);
-      expect(result).toBe('example-com-path-to-resource');
+      expect(result).toBe('example-com-path-to-resource.html');
     });
 
     test('should handle URL with complex path and special characters', () => {
